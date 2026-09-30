@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HomeView from './views/HomeView.vue'
+import OperationsDashboard from './views/OperationsDashboard.vue'
 </script>
 
 <template>
   <v-app>
-    <HomeView />
+    <OperationsDashboard />
   </v-app>
 </template>
