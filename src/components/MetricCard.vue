@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 const integerFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 })
-const captionParts = computed(() => props.chartCaption.split('|').map((part, index) => {
+const captionParts = computed(() => props.chartCaption.split('/').map((part, index) => {
   const text = part.trim()
   return index === 0 ? text : text.charAt(0).toLocaleUpperCase() + text.slice(1)
 }))
@@ -75,7 +75,7 @@ const lineOptions: ChartOptions<'line'> = {
     </div>
     <div class="chart-caption">
       <template v-for="(part, index) in captionParts" :key="`${index}-${part}`">
-        <span v-if="index > 0" class="caption-separator">|</span><span>{{ part }}</span>
+        <span v-if="index > 0" class="caption-separator">/</span><span>{{ part }}</span>
       </template>
     </div>
   </v-card>
@@ -88,6 +88,6 @@ const lineOptions: ChartOptions<'line'> = {
 .metric-value { margin-top: 11px; color: #edf4f1; font-size: 26px; font-weight: 650; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .metric-chart { position: relative; height: 41px; margin-top: 8px; }
 .chart-caption { overflow: hidden; margin-top: 3px; color: #a5b2ad; font-size: 12px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
-.caption-separator { margin-inline: 0.35em; color: inherit; font-weight: 700; }
+.caption-separator { margin-inline: 0.35em; color: inherit; font-weight: 400; }
 @media (max-width: 600px) { .metric-card { min-height: 166px; padding: 15px; }.metric-value { font-size: 23px; }.metric-chart { height: 38px; } }
 </style>

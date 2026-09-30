@@ -13,6 +13,7 @@ import {
   type ChartOptions,
 } from 'chart.js'
 import { Bar, Line } from 'vue-chartjs'
+import ChartPanel from '../components/ChartPanel.vue'
 import MetricCard from '../components/MetricCard.vue'
 import monthlyMetrics from '../data/metrics.json'
 
@@ -151,7 +152,7 @@ function chartSeries(key: MetricKey) {
     return {
       labels: monthLabels,
       values,
-      caption: `Jan-Dec | ${regionCaption}`,
+      caption: `Jan-Dec / ${regionCaption}`,
     }
 }
 
@@ -161,7 +162,7 @@ function chartSeries(key: MetricKey) {
   return {
     labels: weekLabels,
     values: weeklyTrend(key),
-    caption: `Illustrative weekly estimate | ${monthLabel} | ${regionCaption}`,
+    caption: `Illustrative weekly estimate / ${monthLabel} / ${regionCaption}`,
   }
 }
 
@@ -364,46 +365,25 @@ const exceptionOptions: ChartOptions<'line'> = {
       <template v-else>
         <v-row class="chart-row">
           <v-col cols="12" lg="6">
-            <v-card class="chart-card" flat>
-              <div class="chart-heading">
-                <div>
-                  <div class="chart-title">Monthly shipment volume</div>
-                  <div class="chart-subtitle">Completed shipments <span class="chart-separator">|</span> Selected month highlighted</div>
-                </div>
-              </div>
-              <div class="chart-canvas primary-chart">
-                <Bar :data="shipmentChartData" :options="shipmentOptions" aria-label="Monthly completed shipment volume bar chart" />
-              </div>
-            </v-card>
+            <ChartPanel title="Monthly shipment volume" chart-class="primary-chart">
+              <template #subtitle>Completed shipments <span class="chart-separator">/</span> Selected month highlighted</template>
+              <Bar :data="shipmentChartData" :options="shipmentOptions" aria-label="Monthly completed shipment volume bar chart" />
+            </ChartPanel>
           </v-col>
           <v-col cols="12" lg="6">
-            <v-card class="chart-card" flat>
-              <div class="chart-heading">
-                <div>
-                  <div class="chart-title">On-time delivery by region</div>
-                  <div class="chart-subtitle">Shipments delivered by their promised date <span class="chart-separator">|</span> Selected month highlighted</div>
-                </div>
-              </div>
-              <div class="chart-canvas primary-chart">
-                <Line :data="onTimeChartData" :options="onTimeOptions" aria-label="Monthly on-time delivery rate by region line chart" />
-              </div>
-            </v-card>
+            <ChartPanel title="On-time delivery by region" chart-class="primary-chart">
+              <template #subtitle>Shipments delivered by their promised date <span class="chart-separator">/</span> Selected month highlighted</template>
+              <Line :data="onTimeChartData" :options="onTimeOptions" aria-label="Monthly on-time delivery rate by region line chart" />
+            </ChartPanel>
           </v-col>
         </v-row>
 
         <v-row>
           <v-col cols="12">
-            <v-card class="chart-card exceptions-card" flat>
-              <div class="chart-heading">
-                <div>
-                  <div class="chart-title">Open delivery exceptions</div>
-                  <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end <span class="chart-separator">|</span> Selected month highlighted</div>
-                </div>
-              </div>
-              <div class="chart-canvas exception-chart">
-                <Line :data="exceptionChartData" :options="exceptionOptions" aria-label="Month-end open shipment exceptions area chart" />
-              </div>
-            </v-card>
+            <ChartPanel title="Open delivery exceptions" panel-class="exceptions-card" chart-class="exception-chart">
+              <template #subtitle>Unresolved delays, damage, or documentation issues at month end <span class="chart-separator">/</span> Selected month highlighted</template>
+              <Line :data="exceptionChartData" :options="exceptionOptions" aria-label="Month-end open shipment exceptions area chart" />
+            </ChartPanel>
           </v-col>
         </v-row>
       </template>
@@ -434,15 +414,7 @@ const exceptionOptions: ChartOptions<'line'> = {
 :global(.dashboard-filter-menu .v-list-item-title) { font-size: 14px; }
 .metric-row { margin-bottom: 8px; }
 .chart-row { margin-top: 0; }
-.chart-card { height: 100%; min-height: 330px; padding: 19px 20px 15px; border: 1px solid rgba(176, 199, 191, .12); border-radius: 8px; background: #171e20; }
-.chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.chart-title { color: #e6efeb; font-size: 14px; font-weight: 650; }
-.chart-subtitle { margin-top: 5px; color: #879590; font-size: 12px; line-height: 1.45; }
-.chart-separator { margin-inline: 0.35em; color: inherit; font-weight: 700; }
-.chart-canvas { position: relative; width: 100%; margin-top: 14px; }
-.primary-chart { height: 244px; }
-.exceptions-card { min-height: 302px; }
-.exception-chart { height: 220px; }
+.chart-separator { margin-inline: 0.35em; color: inherit; font-weight: 400; }
 .empty-state { margin-top: 14px; }
 .dashboard-footer { display: flex; align-items: center; justify-content: center; gap: 8px; padding-top: 10px; color: #697773; font-size: 10px; font-weight: 700; }
 .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #70d6b4; }
@@ -460,9 +432,5 @@ const exceptionOptions: ChartOptions<'line'> = {
   .overview-heading h1 { font-size: 21px; }
   .main-filter :deep(.v-field__input) { font-size: 14px; }
   .metric-row { margin-bottom: 5px; }
-  .chart-card { min-height: 294px; padding: 16px 14px 13px; }
-  .primary-chart { height: 212px; }
-  .exceptions-card { min-height: 276px; }
-  .exception-chart { height: 196px; }
 }
 </style>
