@@ -97,11 +97,14 @@ const comparison = computed(() => {
   return { label: `${shortMonth(currentMonth)} vs ${shortMonth(previousMonth)}`, values: { current, previous } }
 })
 
-const scopeLabel = computed(() => {
+const overviewDescription = computed(() => {
   const month = selectedMonth.value === 'all'
-    ? 'Full year 2025'
-    : monthOptions.find((option) => option.value === selectedMonth.value)?.title ?? 'Selected month'
-  return `${month} · ${selectedRegion.value}`
+    ? 'all of 2025'
+    : monthOptions.find((option) => option.value === selectedMonth.value)?.title ?? 'the selected month'
+  const region = selectedRegion.value === 'All regions'
+    ? 'across all regions'
+    : `in the ${selectedRegion.value} region`
+  return `This view summarizes shipment volume, on-time delivery, and open exceptions for ${month} ${region}.`
 })
 
 function valueForMetric(values: ReturnType<typeof aggregate>, key: MetricKey): number | null {
@@ -270,10 +273,8 @@ const exceptionOptions: ChartOptions<'line'> = {
         <div class="brand-mark"><v-icon icon="mdi-truck-fast-outline" aria-hidden="true" /></div>
         <div class="brand-copy">
           <div class="brand-name">FastForward <span>Logistics</span></div>
-          <div class="brand-subtitle">OPERATIONS CONTROL</div>
         </div>
       </div>
-      <div class="app-bar-title">Operations overview</div>
     </div>
   </v-app-bar>
 
@@ -281,9 +282,8 @@ const exceptionOptions: ChartOptions<'line'> = {
     <v-container class="dashboard-container" fluid>
       <div class="overview-heading">
         <div>
-          <div class="eyebrow">NETWORK PERFORMANCE <span> / </span> 2025</div>
-          <h1>Operating picture</h1>
-          <p>Shipment movement, delivery reliability, and unresolved exceptions.</p>
+          <h1>2025 Operations Performance</h1>
+          <p>{{ overviewDescription }}</p>
         </div>
         <div class="dashboard-filters" aria-label="Dashboard filters">
           <v-select
@@ -313,19 +313,6 @@ const exceptionOptions: ChartOptions<'line'> = {
         </div>
       </div>
 
-      <div class="scope-note">
-        <v-icon class="scope-icon" icon="mdi-information-outline" size="17" aria-hidden="true" />
-        <div class="scope-copy">
-          <div class="scope-title">Current view: {{ scopeLabel }}</div>
-          <p v-if="selectedMonth === 'all'" class="scope-description">
-            Shipment, on-time, and transit figures cover all of 2025. Open exceptions show December's month-end count. Fewer exceptions and shorter transit times are better.
-          </p>
-          <p v-else class="scope-description">
-            Metrics match the selected month and region. Open exceptions are unresolved issues at month-end; fewer exceptions and shorter transit times are better.
-          </p>
-        </div>
-      </div>
-
       <v-row class="metric-row">
         <v-col v-for="metric in metricCards" :key="metric.key" cols="12" sm="6" xl="3">
           <MetricCard
@@ -352,7 +339,6 @@ const exceptionOptions: ChartOptions<'line'> = {
                   <div class="chart-title">Monthly shipment volume</div>
                   <div class="chart-subtitle">Completed shipments · selected month highlighted</div>
                 </div>
-                <span class="chart-unit">SHIPMENTS</span>
               </div>
               <div class="chart-canvas primary-chart">
                 <Bar :data="shipmentChartData" :options="shipmentOptions" aria-label="Monthly completed shipment volume bar chart" />
@@ -366,7 +352,6 @@ const exceptionOptions: ChartOptions<'line'> = {
                   <div class="chart-title">On-time delivery by region</div>
                   <div class="chart-subtitle">Shipments delivered by their promised date · selected month highlighted</div>
                 </div>
-                <span class="chart-unit">ON TIME</span>
               </div>
               <div class="chart-canvas primary-chart">
                 <Line :data="onTimeChartData" :options="onTimeOptions" aria-label="Monthly on-time delivery rate by region line chart" />
@@ -383,7 +368,6 @@ const exceptionOptions: ChartOptions<'line'> = {
                   <div class="chart-title">Open delivery exceptions</div>
                   <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end · selected month highlighted</div>
                 </div>
-                <span class="chart-unit">MONTH-END SNAPSHOT</span>
               </div>
               <div class="chart-canvas exception-chart">
                 <Line :data="exceptionChartData" :options="exceptionOptions" aria-label="Month-end open shipment exceptions area chart" />
@@ -408,30 +392,20 @@ const exceptionOptions: ChartOptions<'line'> = {
 .brand-mark :deep(.v-icon) { font-size: 21px; }
 .brand-name { color: #e8f0ed; font-size: 14px; font-weight: 700; line-height: 1.2; }
 .brand-name span { color: #a5b3af; font-weight: 450; }
-.brand-subtitle { margin-top: 5px; color: #74827f; font-size: 8px; font-weight: 700; }
-.app-bar-title { margin-left: auto; color: #dce5e1; font-size: 13px; font-weight: 600; }
 .dashboard-container { max-width: 1536px; padding: 29px 28px 22px; }
 .overview-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
-.eyebrow { color: #78a594; font-size: 9px; font-weight: 700; }
-.eyebrow span { margin: 0 5px; color: #556460; }
 .overview-heading h1 { margin: 7px 0 4px; color: #edf4f1; font-size: 24px; font-weight: 650; line-height: 1.2; }
 .overview-heading p { color: #8c9a96; font-size: 11px; }
 .dashboard-filters { display: grid; grid-template-columns: 180px 165px; gap: 9px; flex: 0 0 auto; }
 .main-filter :deep(.v-field) { min-height: 42px; border-radius: 7px; }
 .main-filter :deep(.v-field__input) { min-height: 42px; padding-top: 7px; padding-bottom: 7px; font-size: 11px; }
 .main-filter :deep(.v-field__prepend-inner .v-icon) { color: #83938e; font-size: 17px; }
-.scope-note { display: flex; align-items: flex-start; gap: 10px; min-height: 48px; margin-bottom: 11px; padding: 9px 12px; border-left: 2px solid #70d6b4; background: rgba(112, 214, 180, .045); }
-.scope-icon { flex: 0 0 auto; margin-top: 1px; color: #70d6b4; }
-.scope-copy { min-width: 0; }
-.scope-title { color: #d5dfda; font-size: 10px; font-weight: 650; line-height: 1.3; }
-.scope-description { margin-top: 3px; color: #9aa8a3; font-size: 10px; line-height: 1.45; }
 .metric-row { margin-bottom: 8px; }
 .chart-row { margin-top: 0; }
 .chart-card { height: 100%; min-height: 330px; padding: 19px 20px 15px; border: 1px solid rgba(176, 199, 191, .12); border-radius: 8px; background: #171e20; }
 .chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .chart-title { color: #e6efeb; font-size: 12px; font-weight: 650; }
 .chart-subtitle { margin-top: 5px; color: #879590; font-size: 9px; line-height: 1.45; }
-.chart-unit { padding-top: 2px; color: #71817d; font-size: 8px; font-weight: 700; white-space: nowrap; }
 .chart-canvas { position: relative; width: 100%; margin-top: 14px; }
 .primary-chart { height: 244px; }
 .exceptions-card { min-height: 302px; }
@@ -449,12 +423,10 @@ const exceptionOptions: ChartOptions<'line'> = {
 @media (max-width: 600px) {
   .app-bar-content { width: calc(100% - 28px); }
   .brand-name { font-size: 13px; }
-  .app-bar-title { font-size: 11px; }
   .dashboard-container { padding: 22px 12px 18px; }
   .overview-heading { gap: 12px; }
   .overview-heading h1 { font-size: 21px; }
   .main-filter :deep(.v-field__input) { font-size: 10px; }
-  .scope-note { padding: 9px 10px; }
   .metric-row { margin-bottom: 5px; }
   .chart-card { min-height: 294px; padding: 16px 14px 13px; }
   .primary-chart { height: 212px; }
