@@ -1,86 +1,50 @@
 [
-  {
-    "month": "2025-01",
-    "revenue": 42180,
-    "visitors": 18740,
-    "conversions": 3.1,
-    "orders": 581
-  },
-  {
-    "month": "2025-02",
-    "revenue": 43860,
-    "visitors": 17920,
-    "conversions": 3.2,
-    "orders": 573
-  },
-  {
-    "month": "2025-03",
-    "revenue": 48620,
-    "visitors": 21680,
-    "conversions": 3.0,
-    "orders": 650
-  },
-  {
-    "month": "2025-04",
-    "revenue": 47290,
-    "visitors": 22840,
-    "conversions": 2.8,
-    "orders": 640
-  },
-  {
-    "month": "2025-05",
-    "revenue": 54870,
-    "visitors": 26310,
-    "conversions": 3.1,
-    "orders": 815
-  },
-  {
-    "month": "2025-06",
-    "revenue": 61340,
-    "visitors": 30120,
-    "conversions": 3.0,
-    "orders": 902
-  },
-  {
-    "month": "2025-07",
-    "revenue": 67950,
-    "visitors": 33840,
-    "conversions": 3.2,
-    "orders": 1083
-  },
-  {
-    "month": "2025-08",
-    "revenue": 65480,
-    "visitors": 32670,
-    "conversions": 2.9,
-    "orders": 947
-  },
-  {
-    "month": "2025-09",
-    "revenue": 62890,
-    "visitors": 28960,
-    "conversions": 3.0,
-    "orders": 868
-  },
-  {
-    "month": "2025-10",
-    "revenue": 69120,
-    "visitors": 28170,
-    "conversions": 3.4,
-    "orders": 958
-  },
-  {
-    "month": "2025-11",
-    "revenue": 74460,
-    "visitors": 31940,
-    "conversions": 3.2,
-    "orders": 1022
-  },
-  {
-    "month": "2025-12",
-    "revenue": 78930,
-    "visitors": 31920,
-    "conversions": 3.4,
-    "orders": 1085
-  }
+  { "month": "2025-01", "region": "Northeast", "shipments": 7462, "onTimeShipments": 6984, "openExceptions": 112, "avgTransitDays": 3.18 },
+  { "month": "2025-01", "region": "Southeast", "shipments": 8219, "onTimeShipments": 7545, "openExceptions": 148, "avgTransitDays": 3.72 },
+  { "month": "2025-01", "region": "Midwest", "shipments": 7894, "onTimeShipments": 7562, "openExceptions": 91, "avgTransitDays": 2.83 },
+  { "month": "2025-01", "region": "West", "shipments": 6135, "onTimeShipments": 5540, "openExceptions": 137, "avgTransitDays": 4.84 },
+  { "month": "2025-02", "region": "Northeast", "shipments": 7184, "onTimeShipments": 6688, "openExceptions": 119, "avgTransitDays": 3.27 },
+  { "month": "2025-02", "region": "Southeast", "shipments": 8046, "onTimeShipments": 7314, "openExceptions": 154, "avgTransitDays": 3.81 },
+  { "month": "2025-02", "region": "Midwest", "shipments": 7620, "onTimeShipments": 7247, "openExceptions": 96, "avgTransitDays": 2.91 },
+  { "month": "2025-02", "region": "West", "shipments": 5982, "onTimeShipments": 5366, "openExceptions": 143, "avgTransitDays": 4.93 },
+  { "month": "2025-03", "region": "Northeast", "shipments": 7756, "onTimeShipments": 7329, "openExceptions": 104, "avgTransitDays": 3.09 },
+  { "month": "2025-03", "region": "Southeast", "shipments": 8684, "onTimeShipments": 8085, "openExceptions": 139, "avgTransitDays": 3.54 },
+  { "month": "2025-03", "region": "Midwest", "shipments": 8178, "onTimeShipments": 7884, "openExceptions": 88, "avgTransitDays": 2.76 },
+  { "month": "2025-03", "region": "West", "shipments": 6423, "onTimeShipments": 5883, "openExceptions": 128, "avgTransitDays": 4.63 },
+  { "month": "2025-04", "region": "Northeast", "shipments": 7813, "onTimeShipments": 7250, "openExceptions": 109, "avgTransitDays": 3.21 },
+  { "month": "2025-04", "region": "Southeast", "shipments": 8792, "onTimeShipments": 8115, "openExceptions": 146, "avgTransitDays": 3.64 },
+  { "month": "2025-04", "region": "Midwest", "shipments": 8231, "onTimeShipments": 7811, "openExceptions": 93, "avgTransitDays": 2.82 },
+  { "month": "2025-04", "region": "West", "shipments": 6512, "onTimeShipments": 5913, "openExceptions": 132, "avgTransitDays": 4.71 },
+  { "month": "2025-05", "region": "Northeast", "shipments": 8214, "onTimeShipments": 7812, "openExceptions": 101, "avgTransitDays": 3.04 },
+  { "month": "2025-05", "region": "Southeast", "shipments": 9061, "onTimeShipments": 8481, "openExceptions": 136, "avgTransitDays": 3.43 },
+  { "month": "2025-05", "region": "Midwest", "shipments": 8512, "onTimeShipments": 8256, "openExceptions": 82, "avgTransitDays": 2.64 },
+  { "month": "2025-05", "region": "West", "shipments": 6784, "onTimeShipments": 6289, "openExceptions": 126, "avgTransitDays": 4.52 },
+  { "month": "2025-06", "region": "Northeast", "shipments": 8536, "onTimeShipments": 8041, "openExceptions": 117, "avgTransitDays": 3.15 },
+  { "month": "2025-06", "region": "Southeast", "shipments": 9485, "onTimeShipments": 8669, "openExceptions": 169, "avgTransitDays": 3.62 },
+  { "month": "2025-06", "region": "Midwest", "shipments": 8824, "onTimeShipments": 8489, "openExceptions": 98, "avgTransitDays": 2.74 },
+  { "month": "2025-06", "region": "West", "shipments": 7052, "onTimeShipments": 6424, "openExceptions": 148, "avgTransitDays": 4.67 },
+  { "month": "2025-07", "region": "Northeast", "shipments": 8761, "onTimeShipments": 8086, "openExceptions": 139, "avgTransitDays": 3.34 },
+  { "month": "2025-07", "region": "Southeast", "shipments": 9714, "onTimeShipments": 8713, "openExceptions": 188, "avgTransitDays": 3.86 },
+  { "month": "2025-07", "region": "Midwest", "shipments": 9086, "onTimeShipments": 8604, "openExceptions": 111, "avgTransitDays": 2.91 },
+  { "month": "2025-07", "region": "West", "shipments": 7318, "onTimeShipments": 6557, "openExceptions": 163, "avgTransitDays": 4.96 },
+  { "month": "2025-08", "region": "Northeast", "shipments": 8692, "onTimeShipments": 8118, "openExceptions": 132, "avgTransitDays": 3.29 },
+  { "month": "2025-08", "region": "Southeast", "shipments": 9653, "onTimeShipments": 8746, "openExceptions": 181, "avgTransitDays": 3.78 },
+  { "month": "2025-08", "region": "Midwest", "shipments": 9014, "onTimeShipments": 8617, "openExceptions": 107, "avgTransitDays": 2.86 },
+  { "month": "2025-08", "region": "West", "shipments": 7246, "onTimeShipments": 6529, "openExceptions": 158, "avgTransitDays": 4.89 },
+  { "month": "2025-09", "region": "Northeast", "shipments": 8329, "onTimeShipments": 7896, "openExceptions": 116, "avgTransitDays": 3.06 },
+  { "month": "2025-09", "region": "Southeast", "shipments": 9276, "onTimeShipments": 8608, "openExceptions": 162, "avgTransitDays": 3.51 },
+  { "month": "2025-09", "region": "Midwest", "shipments": 8679, "onTimeShipments": 8401, "openExceptions": 95, "avgTransitDays": 2.73 },
+  { "month": "2025-09", "region": "West", "shipments": 6984, "onTimeShipments": 6411, "openExceptions": 147, "avgTransitDays": 4.61 },
+  { "month": "2025-10", "region": "Northeast", "shipments": 8418, "onTimeShipments": 8056, "openExceptions": 108, "avgTransitDays": 2.98 },
+  { "month": "2025-10", "region": "Southeast", "shipments": 9384, "onTimeShipments": 8830, "openExceptions": 151, "avgTransitDays": 3.45 },
+  { "month": "2025-10", "region": "Midwest", "shipments": 8802, "onTimeShipments": 8537, "openExceptions": 89, "avgTransitDays": 2.69 },
+  { "month": "2025-10", "region": "West", "shipments": 7106, "onTimeShipments": 6623, "openExceptions": 139, "avgTransitDays": 4.57 },
+  { "month": "2025-11", "region": "Northeast", "shipments": 8175, "onTimeShipments": 7676, "openExceptions": 124, "avgTransitDays": 3.16 },
+  { "month": "2025-11", "region": "Southeast", "shipments": 9128, "onTimeShipments": 8407, "openExceptions": 178, "avgTransitDays": 3.69 },
+  { "month": "2025-11", "region": "Midwest", "shipments": 8598, "onTimeShipments": 8202, "openExceptions": 103, "avgTransitDays": 2.87 },
+  { "month": "2025-11", "region": "West", "shipments": 6987, "onTimeShipments": 6372, "openExceptions": 156, "avgTransitDays": 4.73 },
+  { "month": "2025-12", "region": "Northeast", "shipments": 7942, "onTimeShipments": 7338, "openExceptions": 145, "avgTransitDays": 3.38 },
+  { "month": "2025-12", "region": "Southeast", "shipments": 8943, "onTimeShipments": 8084, "openExceptions": 197, "avgTransitDays": 3.92 },
+  { "month": "2025-12", "region": "Midwest", "shipments": 8361, "onTimeShipments": 7884, "openExceptions": 119, "avgTransitDays": 3.04 },
+  { "month": "2025-12", "region": "West", "shipments": 6728, "onTimeShipments": 6048, "openExceptions": 174, "avgTransitDays": 5.08 }
 ]
