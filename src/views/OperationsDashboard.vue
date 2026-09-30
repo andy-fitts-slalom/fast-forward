@@ -147,21 +147,21 @@ function chartSeries(key: MetricKey) {
       const value = valueForMetric(aggregate(recordsForMonth(month)), key)
       return key === 'onTimeRate' ? (value ?? 0) * 100 : value ?? 0
     })
-    const regionCaption = selectedRegion.value === 'All regions' ? 'regions combined' : selectedRegion.value
+    const regionCaption = selectedRegion.value === 'All regions' ? 'Regions combined' : selectedRegion.value
     return {
       labels: monthLabels,
       values,
-      caption: `Jan-Dec · ${regionCaption}`,
+      caption: `Jan-Dec | ${regionCaption}`,
     }
 }
 
   const monthLabel = monthOptions.find((option) => option.value === selectedMonth.value)?.title.replace(' 2025', '') ?? 'Selected month'
-  const regionCaption = selectedRegion.value === 'All regions' ? 'regions combined' : selectedRegion.value
+  const regionCaption = selectedRegion.value === 'All regions' ? 'Regions combined' : selectedRegion.value
 
   return {
     labels: weekLabels,
     values: weeklyTrend(key),
-    caption: `Illustrative weekly estimate · ${monthLabel} · ${regionCaption}`,
+    caption: `Illustrative weekly estimate | ${monthLabel} | ${regionCaption}`,
   }
 }
 
@@ -297,10 +297,9 @@ const exceptionOptions: ChartOptions<'line'> = {
   <v-app-bar class="operations-app-bar" flat height="82">
     <div class="app-bar-content">
       <div class="brand-lockup">
+        <span class="brand-word">FastForward</span>
         <div class="brand-mark"><v-icon icon="mdi-truck-fast-outline" aria-hidden="true" /></div>
-        <div class="brand-copy">
-          <div class="brand-name">FastForward <span>Logistics</span></div>
-        </div>
+        <span class="brand-word brand-word-secondary">Logistics</span>
       </div>
     </div>
   </v-app-bar>
@@ -367,7 +366,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">Monthly shipment volume</div>
-                  <div class="chart-subtitle">Completed shipments · selected month highlighted</div>
+                  <div class="chart-subtitle">Completed shipments <span class="chart-divider">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas primary-chart">
@@ -380,7 +379,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">On-time delivery by region</div>
-                  <div class="chart-subtitle">Shipments delivered by their promised date · selected month highlighted</div>
+                  <div class="chart-subtitle">Shipments delivered by their promised date <span class="chart-divider">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas primary-chart">
@@ -396,7 +395,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">Open delivery exceptions</div>
-                  <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end · selected month highlighted</div>
+                  <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end <span class="chart-divider">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas exception-chart">
@@ -416,26 +415,27 @@ const exceptionOptions: ChartOptions<'line'> = {
 
 <style scoped>
 .operations-app-bar { border-bottom: 1px solid rgba(176, 199, 191, 0.1); background: #12191a !important; }
-.app-bar-content { display: flex; align-items: center; justify-content: space-between; width: min(100% - 56px, 1480px); height: 100%; margin: 0 auto; gap: 24px; }
-.brand-lockup { display: flex; align-items: center; gap: 12px; min-width: 230px; }
+.app-bar-content { display: flex; align-items: center; justify-content: center; width: min(100% - 56px, 1480px); height: 100%; margin: 0 auto; }
+.brand-lockup { display: grid; grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr); align-items: center; gap: 12px; width: min(100%, 420px); margin: 0 auto; }
 .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(112, 214, 180, .25); border-radius: 8px; background: rgba(112, 214, 180, .08); color: #70d6b4; }
 .brand-mark :deep(.v-icon) { font-size: 21px; }
-.brand-name { color: #e8f0ed; font-size: 14px; font-weight: 700; line-height: 1.2; }
-.brand-name span { color: #a5b3af; font-weight: 450; }
+.brand-word { justify-self: end; color: #e8f0ed; font-size: 16px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.brand-word-secondary { justify-self: start; color: #a5b3af; font-weight: 450; }
 .dashboard-container { max-width: 1536px; padding: 29px 28px 22px; }
 .overview-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
 .overview-heading h1 { margin: 7px 0 4px; color: #edf4f1; font-size: 24px; font-weight: 650; line-height: 1.2; }
-.overview-heading p { color: #8c9a96; font-size: 11px; }
+.overview-heading p { color: #8c9a96; font-size: 14px; }
 .dashboard-filters { display: grid; grid-template-columns: 180px 165px; gap: 9px; flex: 0 0 auto; }
 .main-filter :deep(.v-field) { min-height: 42px; border-radius: 7px; }
-.main-filter :deep(.v-field__input) { min-height: 42px; padding-top: 7px; padding-bottom: 7px; font-size: 11px; }
+.main-filter :deep(.v-field__input) { min-height: 42px; padding-top: 7px; padding-bottom: 7px; font-size: 14px; }
 .main-filter :deep(.v-field__prepend-inner .v-icon) { color: #83938e; font-size: 17px; }
 .metric-row { margin-bottom: 8px; }
 .chart-row { margin-top: 0; }
 .chart-card { height: 100%; min-height: 330px; padding: 19px 20px 15px; border: 1px solid rgba(176, 199, 191, .12); border-radius: 8px; background: #171e20; }
 .chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.chart-title { color: #e6efeb; font-size: 12px; font-weight: 650; }
-.chart-subtitle { margin-top: 5px; color: #879590; font-size: 9px; line-height: 1.45; }
+.chart-title { color: #e6efeb; font-size: 14px; font-weight: 650; }
+.chart-subtitle { margin-top: 5px; color: #879590; font-size: 12px; line-height: 1.45; }
+.chart-divider { color: inherit; font-weight: 700; }
 .chart-canvas { position: relative; width: 100%; margin-top: 14px; }
 .primary-chart { height: 244px; }
 .exceptions-card { min-height: 302px; }
@@ -445,18 +445,17 @@ const exceptionOptions: ChartOptions<'line'> = {
 .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #70d6b4; }
 .footer-divider { color: #46534f; }
 @media (max-width: 900px) {
-  .app-bar-content { width: calc(100% - 36px); gap: 14px; }
-  .brand-lockup { min-width: auto; }
+  .app-bar-content { width: calc(100% - 56px); }
   .overview-heading { align-items: flex-start; flex-direction: column; }
   .dashboard-filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; }
 }
 @media (max-width: 600px) {
-  .app-bar-content { width: calc(100% - 28px); }
-  .brand-name { font-size: 13px; }
+  .app-bar-content { width: calc(100% - 24px); }
+  .brand-word { font-size: 16px; }
   .dashboard-container { padding: 22px 12px 18px; }
   .overview-heading { gap: 12px; }
   .overview-heading h1 { font-size: 21px; }
-  .main-filter :deep(.v-field__input) { font-size: 10px; }
+  .main-filter :deep(.v-field__input) { font-size: 14px; }
   .metric-row { margin-bottom: 5px; }
   .chart-card { min-height: 294px; padding: 16px 14px 13px; }
   .primary-chart { height: 212px; }
