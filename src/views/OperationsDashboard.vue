@@ -26,7 +26,6 @@ interface ShipmentMetric {
 }
 
 type MetricKey = 'shipments' | 'onTimeRate' | 'openExceptions' | 'avgTransitDays'
-type TrendDirection = 'up' | 'down' | 'neutral'
 
 ChartJS.register(BarElement, CategoryScale, Filler, Legend, LineElement, LinearScale, PointElement, Tooltip)
 
@@ -37,6 +36,12 @@ const regionColors: Record<string, string> = {
   Southeast: '#e4b65e',
   Midwest: '#8eafe6',
   West: '#df8e7e',
+}
+const metricColors: Record<MetricKey, string> = {
+  shipments: '#70d6b4',
+  onTimeRate: '#8eafe6',
+  openExceptions: '#e4b65e',
+  avgTransitDays: '#df8e7e',
 }
 const monthIds = Array.from(new Set(records.map((record) => record.month))).sort()
 const monthOptions = [
@@ -51,6 +56,7 @@ const selectedMonth = ref('all')
 const selectedRegion = ref('All regions')
 const numberFormat = new Intl.NumberFormat('en-US')
 const monthLabels = monthIds.map((month) => new Date(`${month}-15T12:00:00`).toLocaleDateString('en-US', { month: 'short' }))
+const weekLabels = ['Week 1', 'Week 2', 'Week 3', 'Week 4']
 
 function recordsForMonth(month: string) {
   return records.filter((record) => record.month === month
@@ -82,21 +88,6 @@ const summary = computed(() => {
   return aggregate(recordsForMonth(selectedMonth.value))
 })
 
-const currentMonthIndex = computed(() => selectedMonth.value === 'all'
-  ? monthIds.length - 1
-  : monthIds.indexOf(selectedMonth.value))
-const comparison = computed(() => {
-  const index = currentMonthIndex.value
-  if (index <= 0) return { label: 'No prior month', values: null }
-
-  const currentMonth = monthIds[index]
-  const previousMonth = monthIds[index - 1]
-  const current = aggregate(recordsForMonth(currentMonth))
-  const previous = aggregate(recordsForMonth(previousMonth))
-  const shortMonth = (month: string) => new Date(`${month}-15T12:00:00`).toLocaleDateString('en-US', { month: 'short' })
-  return { label: `${shortMonth(currentMonth)} vs ${shortMonth(previousMonth)}`, values: { current, previous } }
-})
-
 const overviewDescription = computed(() => {
   const month = selectedMonth.value === 'all'
     ? 'all of 2025'
@@ -118,46 +109,82 @@ function formatMetricValue(key: MetricKey, value: number | null): string {
   return `${value.toFixed(2)} days`
 }
 
-function signed(value: number, digits = 1, suffix = '%') {
-  return `${value > 0 ? '+' : ''}${value.toFixed(digits)}${suffix}`
+function weeklyTrend(key: MetricKey) {
+  const selectedRecords = recordsForMonth(selectedMonth.value)
+  const current = aggregate(selectedRecords)
+  const monthIndex = monthIds.indexOf(selectedMonth.value)
+  const previousRecords = monthIndex > 0 ? recordsForMonth(monthIds[monthIndex - 1]) : []
+  const phase = (monthIndex + Math.max(0, regions.indexOf(selectedRegion.value))) % 4
+  const weeklySharePattern = [0.21, 0.26, 0.29, 0.24]
+  const weeklyShares = weeklySharePattern.map((_, index) => weeklySharePattern[(index + phase) % 4])
+  const shareTotal = weeklyShares.reduce((total, share) => total + share, 0)
+  const normalizedShares = weeklyShares.map((share) => share / shareTotal)
+
+  if (key === 'shipments') {
+    return normalizedShares.map((share) => current.shipments * share)
+  }
+
+  if (key === 'openExceptions') {
+    const previous = previousRecords.length ? aggregate(previousRecords).openExceptions : current.openExceptions * 0.9
+    const change = current.openExceptions - previous
+    const wiggles = [0, 0.08, -0.05, 0]
+    return [0.2, 0.48, 0.74, 1].map((progress, index) =>
+      previous + change * progress + wiggles[index] * Math.max(previous, current.openExceptions, 1))
+  }
+
+  const baseline = key === 'onTimeRate'
+    ? (current.onTimeRate ?? 0) * 100
+    : current.avgTransitDays ?? 0
+  const offsets = [-0.8, 0.45, 0.9, -0.3].map((_, index, pattern) => pattern[(index + phase) % pattern.length])
+  const weightedMean = offsets.reduce((total, offset, index) => total + offset * normalizedShares[index], 0)
+  const scale = key === 'onTimeRate' ? 0.7 : 0.08
+  return offsets.map((offset) => baseline + (offset - weightedMean) * scale)
+}
+
+function chartSeries(key: MetricKey) {
+  if (selectedMonth.value === 'all') {
+    const values = monthIds.map((month) => {
+      const value = valueForMetric(aggregate(recordsForMonth(month)), key)
+      return key === 'onTimeRate' ? (value ?? 0) * 100 : value ?? 0
+    })
+    const regionCaption = selectedRegion.value === 'All regions' ? 'regions combined' : selectedRegion.value
+    return {
+      labels: monthLabels,
+      values,
+      caption: `Jan-Dec · ${regionCaption}`,
+    }
+}
+
+  const monthLabel = monthOptions.find((option) => option.value === selectedMonth.value)?.title.replace(' 2025', '') ?? 'Selected month'
+  const regionCaption = selectedRegion.value === 'All regions' ? 'regions combined' : selectedRegion.value
+
+  return {
+    labels: weekLabels,
+    values: weeklyTrend(key),
+    caption: `Illustrative weekly estimate · ${monthLabel} · ${regionCaption}`,
+  }
 }
 
 const metricCards = computed(() => {
-  const definitions: { key: MetricKey; label: string; icon: string; betterWhen: 'higher' | 'lower' }[] = [
-    { key: 'shipments', label: 'Completed shipments', icon: 'mdi-truck-check-outline', betterWhen: 'higher' },
-    { key: 'onTimeRate', label: 'On-time delivery rate', icon: 'mdi-clock-check-outline', betterWhen: 'higher' },
-    { key: 'openExceptions', label: 'Open exceptions', icon: 'mdi-alert-circle-outline', betterWhen: 'lower' },
-    { key: 'avgTransitDays', label: 'Average transit time', icon: 'mdi-timer-outline', betterWhen: 'lower' },
+  const definitions: { key: MetricKey; label: string; icon: string; format: 'count' | 'percent' | 'days' }[] = [
+    { key: 'shipments', label: 'Completed shipments', icon: 'mdi-truck-check-outline', format: 'count' },
+    { key: 'onTimeRate', label: 'On-time delivery rate', icon: 'mdi-clock-check-outline', format: 'percent' },
+    { key: 'openExceptions', label: 'Open exceptions', icon: 'mdi-alert-circle-outline', format: 'count' },
+    { key: 'avgTransitDays', label: 'Average transit time', icon: 'mdi-timer-outline', format: 'days' },
   ]
 
   return definitions.map((definition) => {
     const value = valueForMetric(summary.value, definition.key)
-    const current = comparison.value.values?.current
-    const previous = comparison.value.values?.previous
-    const currentValue = current ? valueForMetric(current, definition.key) : null
-    const previousValue = previous ? valueForMetric(previous, definition.key) : null
-    let changeText = comparison.value.label
-    let trendDirection: TrendDirection = 'neutral'
-    let favorable = true
-
-    if (currentValue !== null && currentValue !== undefined && previousValue !== null && previousValue !== undefined) {
-      const difference = currentValue - previousValue
-      trendDirection = difference > 0 ? 'up' : difference < 0 ? 'down' : 'neutral'
-      favorable = definition.betterWhen === 'higher' ? difference >= 0 : difference <= 0
-      if (definition.key === 'onTimeRate') {
-        changeText = `${signed(difference * 100, 1, ' pp')} · ${comparison.value.label}`
-      } else {
-        const percent = previousValue ? (difference / previousValue) * 100 : 0
-        changeText = `${signed(percent)} · ${comparison.value.label}`
-      }
-    }
+    const series = chartSeries(definition.key)
 
     return {
       ...definition,
       value: hasAvailableData.value ? formatMetricValue(definition.key, value) : '—',
-      comparison: hasAvailableData.value ? changeText : 'No data for this selection',
-      trendDirection: hasAvailableData.value ? trendDirection : 'neutral',
-      favorable,
+      chartLabels: series.labels,
+      chartValues: series.values,
+      chartColor: metricColors[definition.key],
+      chartCaption: series.caption,
+      chartDescription: `${definition.label}: ${series.caption}`,
     }
   })
 })
@@ -318,10 +345,13 @@ const exceptionOptions: ChartOptions<'line'> = {
           <MetricCard
             :label="metric.label"
             :value="metric.value"
-            :comparison="metric.comparison"
-            :trend-direction="metric.trendDirection"
-            :favorable="metric.favorable"
             :icon="metric.icon"
+            :chart-labels="metric.chartLabels"
+            :chart-values="metric.chartValues"
+            :chart-color="metric.chartColor"
+            :chart-caption="metric.chartCaption"
+            :chart-description="metric.chartDescription"
+            :value-format="metric.format"
           />
         </v-col>
       </v-row>
