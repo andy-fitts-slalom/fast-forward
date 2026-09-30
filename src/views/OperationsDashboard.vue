@@ -271,7 +271,7 @@ const onTimeOptions: ChartOptions<'line'> = {
   maintainAspectRatio: false,
   interaction: { mode: 'index', intersect: false },
   plugins: {
-    legend: { position: 'bottom', align: 'start', labels: { color: '#9caaa6', usePointStyle: true, boxWidth: 7, padding: 18, font: { size: 10 } } },
+    legend: { position: 'bottom', align: 'start', labels: { color: '#9caaa6', usePointStyle: true, boxWidth: 7, pointStyleWidth: 14, padding: 18, font: { size: 10 } } },
     tooltip: { callbacks: { label: (context) => ` ${context.dataset.label}: ${Number(context.parsed.y).toFixed(1)}%` } },
   },
   scales: {
@@ -322,6 +322,7 @@ const exceptionOptions: ChartOptions<'line'> = {
             item-title="title"
             item-value="value"
             label="Month"
+            :menu-props="{ contentClass: 'dashboard-filter-menu' }"
             prepend-inner-icon="mdi-calendar-month-outline"
             variant="outlined"
           />
@@ -333,6 +334,7 @@ const exceptionOptions: ChartOptions<'line'> = {
             density="compact"
             hide-details
             label="Region"
+            :menu-props="{ contentClass: 'dashboard-filter-menu' }"
             prepend-inner-icon="mdi-map-marker-outline"
             variant="outlined"
           />
@@ -366,7 +368,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">Monthly shipment volume</div>
-                  <div class="chart-subtitle">Completed shipments <span class="chart-divider">|</span> Selected month highlighted</div>
+                  <div class="chart-subtitle">Completed shipments <span class="chart-separator">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas primary-chart">
@@ -379,7 +381,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">On-time delivery by region</div>
-                  <div class="chart-subtitle">Shipments delivered by their promised date <span class="chart-divider">|</span> Selected month highlighted</div>
+                  <div class="chart-subtitle">Shipments delivered by their promised date <span class="chart-separator">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas primary-chart">
@@ -395,7 +397,7 @@ const exceptionOptions: ChartOptions<'line'> = {
               <div class="chart-heading">
                 <div>
                   <div class="chart-title">Open delivery exceptions</div>
-                  <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end <span class="chart-divider">|</span> Selected month highlighted</div>
+                  <div class="chart-subtitle">Unresolved delays, damage, or documentation issues at month end <span class="chart-separator">|</span> Selected month highlighted</div>
                 </div>
               </div>
               <div class="chart-canvas exception-chart">
@@ -429,19 +431,20 @@ const exceptionOptions: ChartOptions<'line'> = {
 .main-filter :deep(.v-field) { min-height: 42px; border-radius: 7px; }
 .main-filter :deep(.v-field__input) { min-height: 42px; padding-top: 7px; padding-bottom: 7px; font-size: 14px; }
 .main-filter :deep(.v-field__prepend-inner .v-icon) { color: #83938e; font-size: 17px; }
+:global(.dashboard-filter-menu .v-list-item-title) { font-size: 14px; }
 .metric-row { margin-bottom: 8px; }
 .chart-row { margin-top: 0; }
 .chart-card { height: 100%; min-height: 330px; padding: 19px 20px 15px; border: 1px solid rgba(176, 199, 191, .12); border-radius: 8px; background: #171e20; }
 .chart-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .chart-title { color: #e6efeb; font-size: 14px; font-weight: 650; }
 .chart-subtitle { margin-top: 5px; color: #879590; font-size: 12px; line-height: 1.45; }
-.chart-divider { color: inherit; font-weight: 700; }
+.chart-separator { margin-inline: 0.35em; color: inherit; font-weight: 700; }
 .chart-canvas { position: relative; width: 100%; margin-top: 14px; }
 .primary-chart { height: 244px; }
 .exceptions-card { min-height: 302px; }
 .exception-chart { height: 220px; }
 .empty-state { margin-top: 14px; }
-.dashboard-footer { display: flex; align-items: center; justify-content: center; gap: 8px; padding-top: 10px; color: #697773; font-size: 8px; font-weight: 700; }
+.dashboard-footer { display: flex; align-items: center; justify-content: center; gap: 8px; padding-top: 10px; color: #697773; font-size: 10px; font-weight: 700; }
 .status-dot { width: 5px; height: 5px; border-radius: 50%; background: #70d6b4; }
 .footer-divider { color: #46534f; }
 @media (max-width: 900px) {
