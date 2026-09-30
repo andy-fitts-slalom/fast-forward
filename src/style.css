@@ -296,36 +296,19 @@ code {
 }
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   font-family: 'DM Sans', sans-serif;
-  color: #23332d;
-  background: #f5f7f4;
-  --ink: #23332d;
-  --muted: #7c8982;
-  --line: #e8ece8;
-  --green: #237a62;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #101516;
+  font-weight: 400;
 }
 
 * { box-sizing: border-box; }
-html, body, #app { min-width: 320px; min-height: 100%; margin: 0; }
-body { min-height: 100vh; background: #f5f7f4; }
+html, body, #app { min-width: 0; min-height: 100%; margin: 0; }
+body { min-height: 100vh; background: #101516; }
+button, input { font: inherit; }
 #app { width: 100%; max-width: none; margin: 0; text-align: left; border: 0; display: block; }
-.v-application { font-family: 'DM Sans', sans-serif !important; color: var(--ink); background: #f5f7f4 !important; }
-.app-drawer { border-right: 1px solid var(--line) !important; }
-.brand-lockup { display: flex; align-items: center; gap: 11px; min-height: 88px; padding: 0 24px; border-bottom: 1px solid var(--line); }
-.brand-mark { display: grid; width: 36px; height: 36px; place-items: center; color: white; background: var(--green); border-radius: 10px; }
-.brand-title { font-size: 14px; font-weight: 700; line-height: 1.2; letter-spacing: 0; }
-.brand-caption { margin-top: 4px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: 1px; }
-.nav-label { padding: 27px 24px 8px; color: #9aa49e; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
-.nav-list { padding: 0 12px; }
-.nav-list .v-list-item { min-height: 44px; margin-bottom: 4px; color: #66736c; font-size: 13px; }
-.nav-list .v-list-item--active { color: var(--green); background: #edf5f1; }
-.nav-list .v-list-item--active::before { opacity: 0; }
-.workspace-switcher { display: flex; align-items: center; gap: 10px; width: 100%; padding: 16px; border-top: 1px solid var(--line); }
-.avatar-initials { color: #40331b; font-size: 11px; font-weight: 700; }
-.workspace-copy { flex: 1; min-width: 0; }
-.workspace-name { overflow: hidden; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
-.workspace-plan { margin-top: 2px; color: var(--muted); font-size: 11px; }
-.mobile-bar { display: none !important; border-bottom: 1px solid var(--line); }
-.mobile-bar .v-toolbar-title { flex: none; }
-@media (max-width: 960px) { .mobile-bar { display: flex !important; } }
+.v-application { font-family: 'DM Sans', sans-serif !important; background: #101516 !important; }

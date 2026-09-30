@@ -4,21 +4,21 @@ import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import './style.css'
 import App from './App.vue'
-import router from './router'
 
 const vuetify = createVuetify({
 	theme: {
-		defaultTheme: 'dashboardTheme',
+		defaultTheme: 'dashboardDark',
 		themes: {
-			dashboardTheme: {
-				dark: false,
+			dashboardDark: {
+				dark: true,
 				colors: {
-					primary: '#237a62',
-					secondary: '#f0b64c',
-					surface: '#ffffff',
-					background: '#f5f7f4',
-					success: '#237a62',
-					error: '#c25e4b',
+					primary: '#71d8b7',
+					secondary: '#efbd62',
+					background: '#101516',
+					surface: '#171e20',
+					success: '#71d8b7',
+					error: '#ed817c',
+					info: '#8ebfd3',
 				},
 			},
 		},
@@ -26,4 +26,4 @@ const vuetify = createVuetify({
 	icons: { defaultSet: 'mdi' },
 })
 
-createApp(App).use(router).use(vuetify).mount('#app')
+createApp(App).use(vuetify).mount('#app')
